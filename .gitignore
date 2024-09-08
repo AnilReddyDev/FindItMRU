@@ -1,0 +1,62 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+public/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE or Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Optional npm cache directory
+.npm/
+
+# Debug files
+*.tgz
+*.zip
+
+# Coverage directory
+coverage/
+
+# Temporary files
+*.tmp
+*.swp
+
+# Uploaded files or temporary storage
+uploads/
+
+# Git hooks
+.husky/
+
+# Miscellaneous
+*.bak
+*.backup
+
+backend/uploads/
+backend/.env
+backend/firebase.js
+backend/node_modules/
+backend/serviceAccountKey.json
+
+client/node_modules/
+client/src/firebaseConfig.js
