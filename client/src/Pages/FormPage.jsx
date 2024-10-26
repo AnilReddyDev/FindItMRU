@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 export default function FormPage() {
@@ -55,6 +55,14 @@ export default function FormPage() {
     }
   };
 
+  useEffect(() => {
+  const userExists = localStorage.getItem("userExists")
+  console.log("userExists :",userExists);
+  if (userExists != "true1") {
+    navigate("/signin");
+  }
+}, [navigate]);
+
   return (
     <div className="flex flex-col items-center min-h-screen poppins box-border w-full bg-gradient-to-t from-primary/[0.90] to-primary text-primary-light">
       <div className="w-full h-10vh"></div>
@@ -108,7 +116,7 @@ export default function FormPage() {
             <option value="Clothing">Clothing</option>
             <option value="Electronics">Electronics</option>
             <option value="Furniture">Furniture</option>
-            <option value="Other">Other</option>
+            <option value="Others">Others</option>
           </select>
         </div>
 
