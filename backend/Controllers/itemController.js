@@ -64,7 +64,15 @@ const updateItem = asyncHandler(async (req, res) => {
 
 //delete an item
 const deleteItem = asyncHandler(async (req, res) => {
-  res.send("delete an item");
-  console.log("delete an item");
+   const itemId = req.params.itemid;
+   const userId = req.params.userid;
+  //  console.log(`Item ID: ${itemId}`);
+  //  console.log(`User ID: ${userId}`);
+  const deletedItem = await Item.find({_id:itemId,postedBy:userId}).deleteOne();
+  if (!deletedItem) {
+    res.status(404);
+    throw new Error("Item not found");
+  }
+  res.status(200).json({ message: "Item deleted successfully" });
 });
 export { addItem, deleteItem, getItems, updateItem };

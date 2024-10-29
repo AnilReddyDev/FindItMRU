@@ -8,7 +8,7 @@ import itemRoutes from './Routes/itemRoutes.js'
 dotenv.config();
 
 const app = express()
-
+const port = process.env.PORT || 3000;
 connectDB();
 
 
@@ -16,7 +16,8 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin: 'http://localhost:5173', // Ensure this matches your client URL
+    // origin: 'http://localhost:5173', // Ensure this matches your client URL
+    origin: 'https://mrufinder.netlify.app', 
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
@@ -26,4 +27,4 @@ app.use(cors({
 app.use('/api/v1/user', userRoutes)
 app.use('/api/v1/item', itemRoutes)
 
-app.listen(3000, () => console.log('Server running on port 3000'))
+app.listen(port, () => console.log('Server running on port 3000'))

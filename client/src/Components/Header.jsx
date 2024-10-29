@@ -6,8 +6,8 @@ export default function Header() {
   const navigate = useNavigate();
   const [userImage, setUserImage] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState("");
-  console.log(`User Image: ${userImage}`);
-  console.log("User Logged In:", userLoggedIn);
+  // console.log(`User Image: ${userImage}`);
+  // console.log("User Logged In:", userLoggedIn);
   useEffect(() => {
     setUserLoggedIn(localStorage.getItem("userExists") || "false");
     setUserImage(JSON.parse(localStorage.getItem("userInfo"))?.picture || "");

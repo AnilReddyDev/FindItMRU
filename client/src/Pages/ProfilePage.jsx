@@ -8,12 +8,13 @@ export default function ProfilePage() {
   const { id } = useParams();
   const [fetchedListings, setFetchedListings] = useState([]);
   const [userDetails, setUserDetails] = useState({});
+  const [cardReload, setCardReload] = useState([]);
   const navigate = useNavigate();
   const fetchListings = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/item");
+      const response = await axios.get("/api/v1/item");
       setFetchedListings(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -24,17 +25,22 @@ export default function ProfilePage() {
     navigate("/");
   };
 
+  const handleDelete = (itemid) => {
+    setCardReload((prevItems) => prevItems.filter((item) => item._id !== itemid));
+  };
+
   useEffect(() => {
     fetchListings();
     setUserDetails(JSON.parse(localStorage.getItem("userInfo")));
-  }, []);
+  }, [cardReload]);
   const listings = fetchedListings.filter((item) => item.postedBy === id);
+
   return (
     <div className="min-h-screen  box-border w-full poppins bg-gradient-to-t pt-14   from-primary/[0.90] to-primary   text-primary-light flex flex-col justify-start  items-center">
       <div className="w-full h-10vh"></div>
       <img
         className="rounded-full h-40 w-40"
-        src={userDetails?.picture}
+        src={JSON.parse(localStorage.getItem("userInfo"))?.picture}
         alt="profile"
       />
       <div className="flex flex-col text-lg gap-2 mt-4 mb-12">
@@ -53,7 +59,7 @@ export default function ProfilePage() {
         </h1>
         <div className="w-full mt-4 p-5  flex flex-wrap justify-center items-center gap-2">
           {listings.map((item) => (
-            <ItemPostComp key={item._id} data={item} />
+            <ItemPostComp userid={id} key={item._id} data={item} onDelete={handleDelete}/>
           ))}
         </div>
       </div>

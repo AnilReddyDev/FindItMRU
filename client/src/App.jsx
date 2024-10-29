@@ -8,7 +8,7 @@ import Listings from './Pages/Listings';
 import FormPage from './Pages/FormPage';
 import ProfilePage from './Pages/ProfilePage';
 
-// axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 export default function App() {
   return (

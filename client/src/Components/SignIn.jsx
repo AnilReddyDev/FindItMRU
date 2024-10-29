@@ -12,11 +12,11 @@ const SignIn = () => {
 
       // Get the token from the authenticated user
       const token = await result.user.getIdToken();
-      console.log("SignIn Token:", token);
+      // console.log("SignIn Token:", token);
 
       // Make a POST request to your backend
       const response = await axios.post(
-        "http://localhost:3000/api/v1/user/auth",
+        "/api/v1/user/auth",
         {}, // Request body if needed
         {
           headers: {
@@ -26,7 +26,7 @@ const SignIn = () => {
         }
       );
 
-      console.log("User Data:", response.data);
+      // console.log("User Data:", response.data);
 
       // Store the user data in localStorage
       localStorage.setItem(

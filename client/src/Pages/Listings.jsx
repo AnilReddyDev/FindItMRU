@@ -21,9 +21,9 @@ export default function Listings() {
   const categoryParam = searchParams.get("category");
   const fetchListings = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/v1/item");
+      const response = await axios.get("/api/v1/item");
       setFetchedListings(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.log(error);
     }

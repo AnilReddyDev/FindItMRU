@@ -6,6 +6,6 @@ const router = Router();
 router.route("/add").post(upload.fields([{ name: 'itemImage', maxCount: 1 }]),addItem);
 router.route("/").get(getItems);
 router.route("/update").put(updateItem);
-router.route("/delete").delete(deleteItem);
+router.route("/delete/:itemid/:userid").delete(deleteItem);
 
 export default router;

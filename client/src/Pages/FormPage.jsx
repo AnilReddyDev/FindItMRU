@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import {ThreeDot} from 'react-loading-indicators'
 export default function FormPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -9,11 +10,13 @@ export default function FormPage() {
   const [itemImage, setItemImage] = useState(null);
   const [status, setStatus] = useState("Found");
   const [contactInfo, setContactInfo] = useState("");
+  const [loading, setloading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setloading(true);
     // Create a new FormData object
     const formData = new FormData();
     formData.append("title", title);
@@ -27,11 +30,11 @@ export default function FormPage() {
     if (itemImage) {
       formData.append("itemImage", itemImage);
     }
-    console.log("Form Data :",formData);
+    // console.log("Form Data :",formData);
     try {
       // Send form data with multipart/form-data encoding
       const response = await axios.post(
-        "http://localhost:3000/api/v1/item/add",
+        "/api/v1/item/add",
         formData,
         {
           headers: {
@@ -40,7 +43,7 @@ export default function FormPage() {
         }
       );
 
-      console.log(response);
+      // console.log(response);
       // Reset form fields
       setTitle("");
       setDescription("");
@@ -49,6 +52,8 @@ export default function FormPage() {
       setItemImage(null);
       setStatus("Found");
       setContactInfo("");
+
+      setloading(false);
       navigate("/"); // Use navigate instead of Navigate for navigation
     } catch (error) {
       console.log("Form submission failed! Please Try again!", error);
@@ -57,7 +62,7 @@ export default function FormPage() {
 
   useEffect(() => {
   const userExists = localStorage.getItem("userExists")
-  console.log("userExists :",userExists);
+  // console.log("userExists :",userExists);
   if (userExists != "true1") {
     navigate("/signin");
   }
@@ -112,10 +117,10 @@ export default function FormPage() {
             id="category"
             className="text-secondary outline-none h-10 border-2 border-primary-light/[0.3] rounded-md p-2 mt-2"
           >
+            <option value="Electronics">Electronics</option>
+            <option value="Books">Books</option>
             <option value="Accessories">Accessories</option>
             <option value="Clothing">Clothing</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Furniture">Furniture</option>
             <option value="Others">Others</option>
           </select>
         </div>
@@ -177,12 +182,15 @@ export default function FormPage() {
           />
         </div>
 
-        <input
+       <div className="flex w-full my-4 items-center justify-between  ">
+       <input
           type="submit"
-          className="bg-orange-600 hover:bg-orange-700 my-5 text-primary py-2 px-5 font-normal text-lg rounded-md"
+          className="bg-orange-600 cursor-pointer hover:bg-orange-700  text-primary py-2 px-5 font-normal text-lg rounded-md"
           value="Submit"
         />
-      </form>
+        {loading && <p className="text-xl flex items-center font-normal"><ThreeDot color="#FF5000" size="small" text="processing" textColor="" /></p> }
+        </div> 
+        </form>
     </div>
   );
 }
