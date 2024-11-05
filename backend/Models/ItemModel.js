@@ -40,6 +40,19 @@ const itemSchema = new Schema({
     enum: ['Lost', 'Found'],
     required: true,
   },
+  approvalStatus: {
+    type:Boolean,
+    required: true,
+    default: false
+  },
+  approvalBy: {
+    type: String,
+    default: null
+  },
+  approvalByName: {
+    type: String,
+    default: null
+  },
   contactInfo: {
     type: String,
     required: true, // Contact information of the user posting the item

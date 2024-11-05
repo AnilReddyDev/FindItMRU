@@ -7,6 +7,7 @@ import Header from './Components/Header';
 import Listings from './Pages/Listings';
 import FormPage from './Pages/FormPage';
 import ProfilePage from './Pages/ProfilePage';
+import AdminPanel from './Pages/AdminPanel';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
@@ -20,6 +21,7 @@ export default function App() {
       <Route path="/SignIn" element={<SignIn/>}/>
       <Route path="/profile/:id" element={<ProfilePage/>}/>
       <Route path="/listings" element={<Listings/>}/>
+      <Route path="/ap" element={<AdminPanel/>}/>
     </Routes>
 
    </BrowserRouter>

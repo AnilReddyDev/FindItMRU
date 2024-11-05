@@ -1,7 +1,7 @@
 import admin from "../firebase.js";
 
 const verifyToken = async (req, res, next) => {
-  console.log("entered into the verify token function");
+  // console.log("entered into the verify token function");
   // Get the ID token from the request headers
   const idToken = req.headers.authorization?.includes(" ")
     ? req.headers.authorization.split(" ")[1]

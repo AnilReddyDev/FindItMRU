@@ -36,6 +36,7 @@ const SignIn = () => {
           name: response.data.name,
           email: response.data.email,
           picture: response.data.picture,
+          isAdmin: response.data.isAdmin,
         })
       );
       localStorage.setItem("userExists", "true1");

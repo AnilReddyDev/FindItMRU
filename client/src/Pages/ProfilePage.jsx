@@ -12,17 +12,22 @@ export default function ProfilePage() {
   const navigate = useNavigate();
   const fetchListings = async () => {
     try {
-      const response = await axios.get("/api/v1/item");
+      const response = await axios.get("/api/v1/item/myitems");
       setFetchedListings(response.data);
       // console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
-  const logOut = () => {
-    localStorage.removeItem("userExists");
-    localStorage.removeItem("userInfo");
-    navigate("/");
+  const logOut = async() => {
+    try {
+      const response = await axios.delete("/api/v1/user/auth/logout");
+      localStorage.removeItem("userExists");
+      localStorage.removeItem("userInfo");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDelete = (itemid) => {
@@ -59,7 +64,7 @@ export default function ProfilePage() {
         </h1>
         <div className="w-full mt-4 p-5  flex flex-wrap justify-center items-center gap-2">
           {listings.map((item) => (
-            <ItemPostComp userid={id} key={item._id} data={item} onDelete={handleDelete}/>
+            <ItemPostComp approvalStatus={item.approvalStatus} userid={id} key={item._id} data={item} onDelete={handleDelete}/>
           ))}
         </div>
       </div>
