@@ -74,17 +74,14 @@ export default function AdminPanel() {
             Admin Panel
           </h1>
         </div>
-        <div className="w-full no-scrollbar h-7vh flex justify-center items-center gap-5 sm:10 overflow-scroll sm:pl-0 pl-48 pr-7 sm:pr-0">
+        <div className="w-full  no-scrollbar h-7vh flex justify-center items-center gap-5 sm:10 overflow-scroll sm:pl-0 pl-48 pr-7 sm:pr-0">
           {/* <button>Requests in Review</button>
-            <button>Your Approvals</button> */}
+            <button>Your Approvals</button> */} 
           {statuses.map((status) => (
             <button
               key={status}
-              className={` font-normal whitespace-nowrap  rounded-md px-3 py-2 ${
-                statusParam === status
-                  ? "bg-[#fc4903]/[0.90] text-white"
-                  : "bg-white/[0.8] text-secondary"
-              }`}
+              className={`font-normal whitespace-nowrap rounded-full px-4 py-1.5 transition duration-200 shadow-md border ${statusParam === status ? "bg-[#fc4903]/[0.90] text-white border-gray-500/30 backdrop-blur-md" : "bg-gray-700/50 text-white border-gray-500/30 backdrop-blur-md"}`}
+
               onClick={() =>
                 setSearchParams(
                   (prev) => {

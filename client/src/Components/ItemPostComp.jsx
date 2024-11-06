@@ -8,18 +8,28 @@ export default function ItemPostComp({
   onDelete,
   onApproval,
   isAdmin,
+  onProfilePage,
+  onListingPage,
 }) {
-  // const data = {
-  //     "_id": "66d748bc468beb2b9fdf6330",
-  //     "title": "Found Water Bottle",
-  //     "description": "A blue stainless steel water bottle found in the auditorium.",
-  //     "category": "Accessories",
-  //     "location": "MRU Auditorium",
-  //     "image": "https://i.etsystatic.com/12692299/r/il/4e0827/5260854200/il_300x300.5260854200_lfcz.jpg",
-  //     "status": "Found",
-  //     "contactInfo": "auditoriumstaff@gmail.com",
-  //     "postedBy": "uploaded by emma"
-  //   }
+  const formatDateTime = (isoDateString) => {
+    const date = new Date(isoDateString);
+
+    // Format date components
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero-based
+    const year = String(date.getFullYear()).slice(-2); // Only last two digits of the year
+
+    // Format time components
+    let hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+
+    // Convert to 12-hour format
+    hours = hours % 12 || 12;
+    const formattedHours = String(hours).padStart(2, "0");
+
+    return `${day}-${month}-${year} ${formattedHours}:${minutes} ${ampm}`;
+  };
 
   const onApprovalBtn = async (itemId) => {
     try {
@@ -28,7 +38,7 @@ export default function ItemPostComp({
     } catch (error) {
       console.log(error);
     }
-  }
+  };
   const deleteItem = async (itemid, userid) => {
     try {
       const response = await axios.delete(
@@ -54,22 +64,40 @@ export default function ItemPostComp({
   };
 
   return (
-    <div className="sm:w-60 min-h-96 px-2 py-2 rounded-md bg-white/[0.85] ">
+    <div
+      className={`sm:w-72 px-2 py-2 text-white rounded-md bg-gray-800/40 backdrop-blur-lg shadow-lg border border-gray-500/30 ${
+        onAdminPage && "min-h-[490px]"
+      } ${onListingPage && "min-h-[410px]"} ${
+        onProfilePage && "min-h-[490px]"
+      }`}
+    >
       {/* profile page delete button  */}
       {data.postedBy === userid && !onAdminPage && (
         <div className=" flex  py-2 justify-between items-center">
           {approvalStatus === false ? (
-            <p className="text-white bg-gradient-to-r px-2 py-2  gap-2 rounded-lg from-yellow-600 to-yellow-500 text-base  font-normal flex items-center justify-end  cursor-default ">
+            <p className="px-2 text-base py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-normal border border-gray-500/30 shadow-md transition duration-200  ">
               Pending
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-5 text-yellow-500"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"
+                  clipRule="evenodd"
+                />
+              </svg>
             </p>
           ) : (
-            <p className="text-white bg-gradient-to-r px-2 py-2  gap-1 rounded-lg from-green-600 to-green-500 text-base cursor-default  font-normal flex items-center justify-end   ">
+            <p className="px-2 text-base  py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-normal border border-gray-500/30 shadow-md transition duration-200  ">
               Approved
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                className="size-5 text-green"
+                className="size-5 text-green-500"
               >
                 <path
                   fillRule="evenodd"
@@ -80,8 +108,8 @@ export default function ItemPostComp({
             </p>
           )}
           <button
-            onClick={() => deleteItem(data._id, userid)}
-            className="text-red bg-gradient-to-r px-2 py-2 text-white  gap-2 rounded-lg from-red-600 to-red-500  flex items-center justify-end  cursor-pointer font-bold text-lg"
+            onDoubleClick={() => deleteItem(data._id, userid)}
+            className="px-2 text-lg py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-semibold border border-gray-500/30 shadow-md transition duration-200 hover:bg-gray-600/60 hover:border-gray-400/30 active:bg-gray-700/70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +117,7 @@ export default function ItemPostComp({
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="size-6"
+              className="size-5 text-red-600"
             >
               <path
                 strokeLinecap="round"
@@ -106,14 +134,14 @@ export default function ItemPostComp({
       {isAdmin && (
         <div className=" flex  py-2 justify-between items-center">
           <button
-            onClick={() => deleteItemByAdmin(data._id, userid)}
-            className="text-red bg-gradient-to-r px-2 py-2  gap-2 rounded-lg from-red-600 to-red-500  flex items-center justify-end  cursor-pointer font-bold text-lg"
-          >
+            onDoubleClick={() => deleteItemByAdmin(data._id, userid)}
+            className="px-2 text-lg py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-semibold border border-gray-500/30 shadow-md transition duration-200 hover:bg-gray-600/60 hover:border-gray-400/30 active:bg-gray-700/70"
+            >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="size-5"
+              className="size-5 text-red-600"
             >
               <path
                 fillRule="evenodd"
@@ -123,40 +151,74 @@ export default function ItemPostComp({
             </svg>
             <p className=" font-normal text-sm">Delete</p>
           </button>
-          <button
-            onClick={() => onApprovalBtn(data._id)}
-            className="text-white bg-gradient-to-r px-2 py-2  gap-2 rounded-lg from-green-600 to-green-500  flex items-center justify-end  cursor-pointer font-bold text-lg"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-5 text-green"
+          {data.approvalStatus === false ? (
+            <button
+              onDoubleClick={() => onApprovalBtn(data._id)}
+              className="px-2 text-lg py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-semibold border border-gray-500/30 shadow-md transition duration-200 hover:bg-gray-600/60 hover:border-gray-400/30 active:bg-gray-700/70"
             >
-              <path
-                fillRule="evenodd"
-                d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <p className=" font-normal text-sm">approve</p>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-5"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25V15a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+
+              <p className=" font-normal text-sm">approve</p>
+            </button>
+          ) : (
+            <p className="px-2 text-base  py-2 flex items-center gap-2 rounded-md bg-gray-700/50 backdrop-blur-md text-white font-normal border border-gray-500/30 shadow-md transition duration-200  ">
+              Approved
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="size-5 text-green-500"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </p>
+          )}
         </div>
       )}
-      <img src={data.image} className="w-full rounded-md" alt="image" />
-      <div className="pt-2 box-border text-black">
-        <h1 className="text-lg tracking-wide font-medium ">
+      <img
+        src={data.image}
+        className="w-full h-[200px] rounded-md"
+        alt="image"
+      />
+      <div className="pt-2 box-border text-white">
+        <h1 className="text-base tracking-wide font-medium ">
           Title: <span className="font-normal">{data.title}</span>{" "}
         </h1>
-        <h1 className="text-lg tracking-wide font-medium ">
+        <h1 className="text-base tracking-wide font-medium ">
           Location: <span className="font-normal">{data.location}</span>{" "}
         </h1>
-        <h1 className="text-lg tracking-wide font-medium ">
-          Date: <span className="font-normal">{Date.now()}</span>
+        <h1 className="text-base tracking-wide font-medium ">
+          Description: <span className="font-normal">{data.description}</span>
         </h1>
-        {onAdminPage && <h1 className="text-lg tracking-wide font-medium ">
-          Approved by : <span className="font-normal">{data.approvalByName}</span>
-        </h1>}
+        <h1 className="text-base tracking-wide font-medium ">
+          Contact: <span className="font-normal">{data.contactInfo}</span>
+        </h1>
+
+        <h1 className=" text-base tracking-wide font-medium ">
+          Date :{" "}
+          <span className="font-normal">{formatDateTime(data.createdAt)}</span>
+        </h1>
+        {onAdminPage && (
+          <h1 className="text-base tracking-wide font-medium ">
+            Approved by :{" "}
+            <span className="font-normal">{data.approvalByName}</span>
+          </h1>
+        )}
       </div>
     </div>
   );

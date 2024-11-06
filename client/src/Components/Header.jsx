@@ -13,7 +13,7 @@ export default function Header() {
     setUserImage(JSON.parse(localStorage.getItem("userInfo"))?.picture || "");
   })
   return (
-    <div className=" bg-primary fixed poppins top-0 left-0 h-10vh box-border text-primary-light w-full border-b-2 border-primary-light/[0.3] ">
+    <div className=" bg-primary z-10 fixed poppins top-0 left-0 h-10vh box-border text-primary-light w-full border-b-2 border-primary-light/[0.3] ">
       <div className="w-full h-full flex items-center justify-between pr-5 sm:pr-10">
         <img
           src={logo}

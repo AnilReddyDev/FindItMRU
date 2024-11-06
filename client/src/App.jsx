@@ -8,6 +8,7 @@ import Listings from './Pages/Listings';
 import FormPage from './Pages/FormPage';
 import ProfilePage from './Pages/ProfilePage';
 import AdminPanel from './Pages/AdminPanel';
+import LostPage from './Pages/LostPage';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="/profile/:id" element={<ProfilePage/>}/>
       <Route path="/listings" element={<Listings/>}/>
       <Route path="/ap" element={<AdminPanel/>}/>
+      <Route path="/*" element={<LostPage/>}/>
     </Routes>
 
    </BrowserRouter>

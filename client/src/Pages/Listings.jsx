@@ -58,16 +58,15 @@ export default function Listings() {
         {statuses.map((status) => (
           <button
             key={status}
-            className={` font-normal rounded-md px-3 py-2 ${
-                statusParam === status ? "bg-[#fc4903]/[0.90] text-white" : "bg-white/[0.8] text-secondary"
-              }`}
+            className={`font-normal rounded-full px-3 py-1 transition duration-200 shadow-md border ${statusParam === status ? "bg-[#fc4903]/[0.90] text-white border-gray-500/30 backdrop-blur-md" : "bg-gray-700/50 text-white border-gray-500/30 backdrop-blur-md"}`}
+
             onClick={() =>
               setSearchParams((prev) => {
                 prev.set("status", status);
                 return prev;
               },{replace:true})
             }
-          >
+          >   
             {status === "Lost" ? "Lost Items" : "Found Items"}
           </button>
         ))}
@@ -76,9 +75,7 @@ export default function Listings() {
         {categories.map((category) => (
           <button
             key={category}
-            className={`  font-normal rounded-full px-3 py-1 ${
-                categoryParam === category ? "bg-[#fc4903]/[0.90] text-white" : "bg-white/[0.8] text-secondary"
-              }`}
+            className={`font-normal rounded-full px-3 py-1 transition duration-200 shadow-md border ${categoryParam === category ? "bg-[#fc4903]/[0.90] text-white border-gray-500/30 backdrop-blur-md" : "bg-gray-700/50 text-white border-gray-500/30 backdrop-blur-md"}`}
             onClick={() =>
               setSearchParams((prev) => {
                 prev.set("category", category);
@@ -94,7 +91,7 @@ export default function Listings() {
 
         {filteredItems.length > 0
           ? filteredItems.map((item) => (
-              <ItemPostComp key={item._id} data={item} />
+              <ItemPostComp key={item._id} data={item} onListingPage={true} />
             ))
           : "No items found."}
   
